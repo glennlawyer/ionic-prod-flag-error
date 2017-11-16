@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-navbar>
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+	<!-- LOGO HERE -->
+	<ion-item item-borderless>
+		LOGO
+		<br>
+		Login status: {{user | json }}
+	<!-- <object data="img/Logo.svg" type="image/svg+xml" style="max-height: 345px; max-width:100%;"></object> -->
+	</ion-item>
+
+
+	
+	<ion-item no-lines *ngIf="userLoggedIn">
+			<button ion-button full round (click)="signOut()">
+				Log out
+			</button>
+		</ion-item>
+
+	<div class="login-box" *ngIf="!userLoggedIn">
+		<ion-item no-lines text-center>
+		<h1>Log in</h1> 
+		</ion-item>
+		<ion-item no-lines>
+			<button ion-button  full round (click)="signInWithFacebook()">
+				Facebook
+			</button>
+		</ion-item>
+		<ion-item no-lines>
+			<button ion-button full round (click)="toggleEmailLogin()">
+				Email
+			</button>
+		</ion-item>
+
+		<form *ngIf="showEmailToggle" [formGroup]="loginForm" (submit)="emailLogin()" novalidate>
+			<ion-item no-lines>
+				<ion-label stacked>Email</ion-label>
+				<ion-input #email formControlName="email" type="email" placeholder="Your email address"
+								 [class.invalid]="!loginForm.controls.email.valid &&
+								 loginForm.controls.email.dirty"></ion-input>
+			</ion-item>
+			<ion-item no-lines class="error-message" *ngIf="!loginForm.controls.email.valid  &&
+			loginForm.controls.email.dirty">
+				<p>Please enter a valid email.</p>
+			</ion-item>
+			<ion-item no-lines>
+				<ion-label stacked>Password</ion-label>
+				<ion-input #password formControlName="password" type="password" placeholder="Your password"
+													[class.invalid]="!loginForm.controls.password.valid &&
+													loginForm.controls.password.dirty"></ion-input>
+			</ion-item>
+			<ion-item no-lines class="error-message" *ngIf="!loginForm.controls.password.valid  &&
+			loginForm.controls.password.dirty">
+				<p>Your password needs more than 6 characters.</p>
+			</ion-item>
+
+			<div *ngIf="emailLoginErrorToggle" text-wrap text-center>
+				<ion-item no-lines text-wrap>
+					We didn't recognize that email address/password combination.
+				</ion-item>
+
+				<ion-item no-lines inset text-center>
+					<button  ion-button round  (click)="resetPassword()">
+						Sent password reset email	
+					</button>
+				</ion-item>
+
+				<ion-item no-lines text-wrap>
+					Would you like to create a new account with the email/password entered above?
+				</ion-item>
+
+				<ion-item no-lines text-center>
+					<button ion-button round (click)="createAccount()">
+						Create a new account
+					</button>
+				</ion-item>
+
+				<ion-item no-lines text-wrap>
+					Otherwise try logging in again!	
+				</ion-item>
+			</div>
+
+			<ion-item no-lines text-center>
+			<button ion-button round large type="submit"
+					[disabled]="!loginForm.controls.email.valid" >
+					LOGIN
+			</button>
+			</ion-item>
+		</form>
+
+		
+		<ion-item no-lines text-wrap >
+			By logging in, you agree to our Terms of Service and Privacy Policy.
+		</ion-item>
+		</div>
+
+
+	<ion-card>
+		<ngx-charts-bar-horizontal *ngIf="userLoggedIn"
+																	[view]="view"
+																	[scheme]="colorScheme"
+																	[results]="single"
+																	[gradient]="gradient"
+																	[xAxis]="showXAxis"
+																	[yAxis]="showYAxis"
+																	[legend]="showLegend"
+																	[showXAxisLabel]="showXAxisLabel"
+																	[showYAxisLabel]="showYAxisLabel"
+																	[xAxisLabel]="xAxisLabel"
+																	[yAxisLabel]="yAxisLabel"
+																	(select)="onSelect($event)">
+		</ngx-charts-bar-horizontal>
+	</ion-card>
+</ion-content>
